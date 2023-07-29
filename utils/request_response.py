@@ -48,10 +48,11 @@ def resp(
 class RequestResponseLogMiddleware(MiddlewareMixin):
     def __init__(self, get_response):
         super().__init__(get_response)
-        mongo = DATABASES.get("mongo_smartest")["CLIENT"]
-        uri = f"mongodb://{mongo['username']}:{mongo['password']}@{mongo['host']}:{mongo['port']}/{mongo['authSource']}"
+        mongo = DATABASES.get("mongo_smartest")
+        info = mongo["CLIENT"]
+        uri = f"mongodb://{info['username']}:{info['password']}@{info['host']}:{info['port']}/{info['authSource']}"
         self.client = MongoClient(uri)
-        self.db = self.client["smartest"]
+        self.db = self.client[mongo["NAME"]]
         self.collection = self.db["logs"]
 
     def process_request(self, request):
