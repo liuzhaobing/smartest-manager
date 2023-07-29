@@ -9,7 +9,7 @@ from rest_framework import status
 from apps.common.models import FilesModel
 from apps.common.serializers import FilesSerializer
 from smartest.settings import MEDIA_ROOT
-from utils.request_response import response
+from utils.request_response import resp
 from utils.viewset import CustomModelViewSet
 
 
@@ -28,16 +28,16 @@ class FilesView(CustomModelViewSet):
     def create(self, request, *args, **kwargs):
         file_obj = request.FILES.get("file")
         if not file_obj:
-            return response(success=False, msg="filed file does not exist!",
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return resp(success=False, msg="filed file does not exist!",
+                        status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         request_data = copy.deepcopy(request.data)
         old_filename = request_data.get("filename", "")
         old_filepath = request_data.get("filepath", "")
 
         if not old_filename:
-            return response(success=False, msg="filed filename does not exist!",
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return resp(success=False, msg="filed filename does not exist!",
+                        status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         request_data["filename"] = datetime.datetime.now().strftime("%Y%m%d%H%M%S") + "_" + old_filename
         request_data["filepath"] = old_filepath.removeprefix("/").removesuffix("/")
@@ -54,4 +54,4 @@ class FilesView(CustomModelViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-        return response(serializer.data, status=status.HTTP_200_OK, headers=headers)
+        return resp(serializer.data, status=status.HTTP_200_OK, headers=headers)
