@@ -1,5 +1,7 @@
 # -*- coding:utf-8 -*-
+import copy
 import datetime
+import json
 import logging
 import threading
 import time
@@ -56,6 +58,7 @@ class RequestResponseLogMiddleware(MiddlewareMixin):
         self.collection = self.db["logs"]
 
     def process_request(self, request):
+        request.request_body = copy.deepcopy(request.body)
         request.start_time = time.perf_counter()
         return self.get_response(request)
 
@@ -63,11 +66,18 @@ class RequestResponseLogMiddleware(MiddlewareMixin):
         if request.path.startswith("/static/"):
             return response
         try:
+            if request.method == "GET":
+                request_body = json.dumps(request.GET.dict(), ensure_ascii=False)
+            elif request.method == "POST":
+                request_body = json.dumps(request.POST.dict(), ensure_ascii=False)
+            else:
+                request_body = request.request_body.decode("UTF-8")
+
             request_log = dict(
                 request_ip=request.META.get("REMOTE_ADDR", ""),
                 request_method=request.method,
                 request_path=request.path,
-                request_body=request.body.decode("utf-8"),
+                request_body=request_body,
                 response_status=response.status_code,
                 response_body=response.content.decode("utf-8"),
                 response_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -76,9 +86,13 @@ class RequestResponseLogMiddleware(MiddlewareMixin):
             threading.Thread(target=self.insert_one, args=(request_log,)).start()
 
         except Exception as e:
-            logger.error(f"save request log failed: {e}")
+            logger.error(f"encode request log failed: {e}")
         return response
 
     def insert_one(self, data):
-        logger.info(data)
-        self.collection.insert_one(data)
+        logger.info(json.dumps(data, ensure_ascii=False))
+        try:
+            return self.collection.insert_one(data)
+        except Exception as e:
+            logger.error(f"insert request log failed: {e}")
+            return None
