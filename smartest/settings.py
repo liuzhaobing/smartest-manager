@@ -32,6 +32,7 @@ INSTALLED_APPS = [
 
     "apps.plans.apps.PlansConfig",
     "apps.tasks.apps.TasksConfig",
+    "apps.common.apps.FilesConfig",
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True  # 指定所有域名都可以访问后端接口
@@ -74,8 +75,9 @@ CONF_FILE = os.path.join(BASE_DIR, "conf/database.yaml")
 DATABASES = yaml.load(open(CONF_FILE, "r", encoding="UTF-8"), Loader=yaml.FullLoader)
 
 DATABASES_APPS_MAPPING = {
-    "apps.plans.apps.PlansConfig": "smartest_mysql",
-    "apps.tasks.apps.TasksConfig": "smartest_mongo",
+    "apps.plans.apps.PlansConfig": "mysql_nlpautotest",
+    "apps.common.apps.FilesConfig": "mysql_smartest",
+    "apps.tasks.apps.TasksConfig": "mongo_smartest",
 }
 
 DATABASE_ROUTERS = ["utils.app_router.DatabaseAppsRouter"]

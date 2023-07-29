@@ -6,7 +6,7 @@ default:
   USER: root
   PASSWORD: ""
 
-smartest_mysql:
+mysql_nlpautotest:
   ENGINE: django.db.backends.mysql
   NAME: nlpautotest
   HOST: 172.16.23.33
@@ -14,7 +14,15 @@ smartest_mysql:
   USER: root
   PASSWORD: ""
 
-smartest_mongo:
+mysql_smartest:
+  ENGINE: django.db.backends.mysql
+  NAME: smartest
+  HOST: 172.16.23.33
+  PORT: 3306
+  USER: root
+  PASSWORD: ""
+
+mongo_smartest:
   ENGINE: djongo
   NAME: smartest
   ENFORCE_SCHEMA: false
