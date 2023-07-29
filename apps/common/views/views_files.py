@@ -6,8 +6,8 @@ from pathlib import Path
 
 from rest_framework import status
 
-from apps.common.models import FilesModel
-from apps.common.serializers import FilesSerializer
+from apps.common.models.models_files import FilesModel
+from apps.common.serializers.serializers_files import FilesSerializer
 from smartest.settings import MEDIA_ROOT
 from utils.request_response import resp
 from utils.viewset import CustomModelViewSet

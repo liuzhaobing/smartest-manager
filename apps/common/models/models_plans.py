@@ -8,7 +8,7 @@ class PlansModel(BaseModel):
         db_table = "plans"
         verbose_name = "测试计划列表"
         verbose_name_plural = "测试计划列表"
-        app_label = "apps.plans.apps.PlansConfig"
+        app_label = "apps.common.apps.CommonConfig"
 
     """
     null 是针对数据库而言，如果 null=True, 表示数据库的该字段可以为空，即在Null字段显示为YES

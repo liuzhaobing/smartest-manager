@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
-from apps.plans.models import PlansModel
-from apps.plans.serializers import PlansSerializer
+from apps.common.models.models_plans import PlansModel
+from apps.common.serializers.serializers_plans import PlansSerializer
 from utils.viewset import CustomModelViewSet
 
 

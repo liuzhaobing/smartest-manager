@@ -1,7 +1,7 @@
 import logging
 
-from apps.tasks.models import TasksModel
-from apps.tasks.serializers import TasksSerializer
+from apps.report.models.models_tasks import TasksModel
+from apps.report.serializers.serializers_tasks import TasksSerializer
 from utils.viewset import CustomModelViewSet
 
 logger = logging.getLogger("django")

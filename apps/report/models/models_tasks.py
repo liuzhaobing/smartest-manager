@@ -7,7 +7,7 @@ class TasksModel(models.Model):
         db_table = "tasks"
         verbose_name = "测试执行历史"
         verbose_name_plural = "测试执行历史"
-        app_label = "apps.tasks.apps.TasksConfig"
+        app_label = "apps.report.apps.ReportConfig"
 
     _id = models.ObjectIdField(editable=False, primary_key=True)
     job_instance_id = models.CharField(verbose_name="任务ID", max_length=1024)

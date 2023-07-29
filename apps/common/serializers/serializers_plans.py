@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 from rest_framework import serializers
 
-from apps.plans.models import PlansModel
+from apps.common.models.models_plans import PlansModel
 
 
 class PlansSerializer(serializers.ModelSerializer):

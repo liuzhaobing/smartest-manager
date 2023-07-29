@@ -30,9 +30,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_filters",
 
-    "apps.plans.apps.PlansConfig",
-    "apps.tasks.apps.TasksConfig",
-    "apps.common.apps.FilesConfig",
+    "apps.common.apps.CommonConfig",
+    "apps.report.apps.ReportConfig",
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True  # 指定所有域名都可以访问后端接口
@@ -76,9 +75,8 @@ CONF_FILE = os.path.join(BASE_DIR, "conf/database.yaml")
 DATABASES = yaml.load(open(CONF_FILE, "r", encoding="UTF-8"), Loader=yaml.FullLoader)
 
 DATABASES_APPS_MAPPING = {
-    "apps.plans.apps.PlansConfig": "mysql_nlpautotest",
-    "apps.common.apps.FilesConfig": "mysql_smartest",
-    "apps.tasks.apps.TasksConfig": "mongo_smartest",
+    "apps.common.apps.CommonConfig": "mysql_smartest",
+    "apps.report.apps.ReportConfig": "mongo_smartest",
 }
 
 DATABASE_ROUTERS = ["utils.app_router.DatabaseAppsRouter"]
