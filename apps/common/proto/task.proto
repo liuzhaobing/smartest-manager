@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package task;
+
+option go_package = ".;task";
+
+service TaskService {
+    rpc Run (RunRequest) returns (Response) {}
+
+    rpc Stop (StopRequest) returns (Response) {}
+
+    rpc List (TaskInfo) returns (ListResponse) {}
+}
+
+message PlanInfo {
+    int32 id = 1;
+    string task_name = 2;
+    string task_type = 3;
+    string task_group = 4;
+    string task_config = 5;
+    string task_data_source = 6;
+    string task_data_source_label = 7;
+    string is_crontab = 8;
+    string crontab_string = 9;
+}
+
+message TaskInfo {
+    string job_instance_id = 1;
+    string task_name = 2;
+    string task_type = 3;
+    int32 status = 4;
+    int32 progress_percent = 5;
+    string progress = 6;
+    float accuracy = 7;
+    string message = 8;
+    string result_file = 9;
+    string start_time = 10;
+    string end_time = 11;
+    string username = 12;
+}
+
+message RunRequest {
+    PlanInfo plan = 1;
+    TaskInfo task = 2;
+}
+
+message StopRequest {
+    string job_instance_id = 1;
+    string username = 2;
+}
+
+message Response {
+    int32 code = 1;
+    bool success = 2;
+    string msg = 3;
+    TaskInfo data = 4;
+}
+
+message ListResponse {
+    int32 code = 1;
+    bool success = 2;
+    string msg = 3;
+    repeated TaskInfo data = 4;
+}
