@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+NAME="smartest-manager"
+PROJECT_PATH=`pwd`
+USER=root
+GROUP=root
+NUM_WORKERS=5
+DJANGO_WSGI_MODULE=smartest.wsgi
+
+
+mkdir -p runtime/logs/
+
+PIDFILE="runtime/logs/smartest-manager.pid"
+ACCESS_LOGFILE="runtime/logs/smartest-manager-access.log"
+ERROR_LOGFILE="runtime/logs/smartest-manager-error.log"
+
+if [ -f $PIDFILE ]; then
+    PID=$(cat $PIDFILE)
+    echo "[`date +'%Y-%m-%d %H:%M:%S'`] [`whoami`] Kill pid $PID of $NAME"
+    kill -9 $PID
+fi
+
+export PYTHONPATH=$PROJECT_PATH:$PYTHONPATH
+# pip install gunicorn  -i http://pypi.douban.com/simple/ --trusted-host pypi.douban.com
+
+echo "[`date +'%Y-%m-%d %H:%M:%S'`] [`whoami`] Starting $NAME"
+
+exec gunicorn ${DJANGO_WSGI_MODULE}:application \
+--name $NAME \
+--workers $NUM_WORKERS \
+--bind 0.0.0.0:28000 \
+--log-level=debug \
+--error-logfile $ERROR_LOGFILE \
+--access-logfile $ACCESS_LOGFILE \
+--pid $PIDFILE \
+--threads $[$NUM_WORKERS*60] \
+--worker-connections $[$NUM_WORKERS*60] \
+--timeout $[$NUM_WORKERS*60] \
+--graceful-timeout $[$NUM_WORKERS*60]

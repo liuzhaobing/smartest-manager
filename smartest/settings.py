@@ -128,7 +128,7 @@ LOG_RUL = 'logs/'
 LOG_ROOT = os.path.join(RUNTIME_ROOT, LOG_RUL)
 os.makedirs(LOG_ROOT, exist_ok=True)
 
-SMART_LOG_FILE = os.path.join(LOG_ROOT, 'smartest.log')
+SMART_LOG_FILE = os.path.join(LOG_ROOT, 'smartest-manager.log')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -152,12 +152,11 @@ LOGGING = {
             "stream": "ext://sys.stdout",
         },
         "smartest": {
-            "class": "logging.handlers.RotatingFileHandler",
-            "level": "INFO",
-            "formatter": "simple",
+            "class": "logging.handlers.TimedRotatingFileHandler",
             "filename": SMART_LOG_FILE,
-            "maxBytes": 10485760,
-            "backupCount": 50,
+            "when": "midnight",
+            "backupCount": 180,
+            "formatter": "simple",
             "encoding": "utf8",
         }
     },
