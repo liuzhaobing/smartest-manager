@@ -31,9 +31,8 @@ def resp(
         success=success,
         msg=msg,
         data=response_data,
+        **kwargs,
     )
-    if kwargs:
-        _resp.update(kwargs)
 
     return Response(
         data=_resp,
